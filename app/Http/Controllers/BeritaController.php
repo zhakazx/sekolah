@@ -16,7 +16,7 @@ class BeritaController extends Controller
     public function index()
     {
         $berita = Berita::query()
-                        ->where('isPublished', '1')
+                        ->where('isPublished', 1)
                         ->latest()
                         ->paginate(10);
         return response()->json($berita);
@@ -31,6 +31,11 @@ class BeritaController extends Controller
     public function store(StoreBeritaRequest $request)
     {
         $validator = $request->validated();
+
+        if($request->file('image')) {
+            $getFileName = time().'-'.$request->image->getClientOriginalName();
+            $request->file('image')->move(public_path(). '/berita' .$getFileName);
+        }
 
         $berita = Berita::create($validator);
         return response()->json([

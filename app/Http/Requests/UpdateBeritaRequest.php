@@ -13,7 +13,7 @@ class UpdateBeritaRequest extends FormRequest
      */
     public function authorize()
     {
-        return false;
+        return true;
     }
 
     /**
@@ -24,7 +24,10 @@ class UpdateBeritaRequest extends FormRequest
     public function rules()
     {
         return [
-            //
+            'judul' => ['required', 'max:100'],
+            'deskripsi' => ['required'],
+            'image' => ['nullable', 'image', 'mimes:png,jpg,jpeg,gif', 'size:5120'],
+            'isPublished' => ['nullable', 'boolean']
         ];
     }
 }

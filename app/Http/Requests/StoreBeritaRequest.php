@@ -24,7 +24,10 @@ class StoreBeritaRequest extends FormRequest
     public function rules()
     {
         return [
-            //
+            'judul' => ['required', 'max:100'],
+            'deskripsi' => ['required'],
+            'image' => ['nullable', 'image', 'mimes:png,jpg,jpeg,gif'],
+            'isPublished' => ['nullable', 'boolean']
         ];
     }
 }
