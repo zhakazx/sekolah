@@ -34,7 +34,7 @@ class BeritaController extends Controller
 
         if($request->file('image')) {
             $getFileName = time().'-'.$request->image->getClientOriginalName();
-            $request->file('image')->move(public_path(). '/berita' .$getFileName);
+            $validator['image'] = $request->file('image')->storePubliclyAs('berita/', $getFileName, 'public');
         }
 
         $berita = Berita::create($validator);
