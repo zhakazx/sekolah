@@ -6,6 +6,7 @@ use App\Helpers\ImageHelper;
 use App\Models\Berita;
 use App\Http\Requests\StoreBeritaRequest;
 use App\Http\Requests\UpdateBeritaRequest;
+use App\Http\Resources\BeritaResource;
 use Illuminate\Support\Facades\File;
 
 class BeritaController extends Controller
@@ -18,10 +19,10 @@ class BeritaController extends Controller
     public function index()
     {
         $berita = Berita::query()
-                        ->where('isPublished', 1)
+                        ->published()
                         ->latest()
                         ->paginate(10);
-        return response()->json($berita);
+        return BeritaResource::collection($berita);
     }
 
     /**
@@ -58,7 +59,7 @@ class BeritaController extends Controller
      */
     public function show(Berita $berita)
     {
-        return response()->json(['berita' => $berita]);
+        return new BeritaResource($berita);
     }
 
     /**

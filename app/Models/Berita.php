@@ -10,4 +10,9 @@ class Berita extends Model
     use HasFactory;
 
     protected $guarded = ['id'];
+
+    public function scopePublished($query)
+    {
+        return $query->where('isPublished', true);
+    }
 }
