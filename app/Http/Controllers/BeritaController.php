@@ -70,7 +70,7 @@ class BeritaController extends Controller
      */
     public function update(UpdateBeritaRequest $request, Berita $berita)
     {
-        $validator = $request->validated();
+        $request->validated();
 
         if($request->hasFile('image')) {
             $path = 'berita/' . $berita->image;
@@ -78,13 +78,15 @@ class BeritaController extends Controller
                 File::delete($path);
             }
 
-            $getFileName = pathinfo($request->image->getClientOriginalName(), PATHINFO_FILENAME);
-            $getExtension = $request->image->getClientOriginalExtension();
-            $storeFileName = $getFileName . '-' . time() . '.' . $getExtension;
-            $validator['image'] = $request->file('image')->move(public_path('/berita/'), $storeFileName);
+            $storeImage = ImageHelper::saveImage($request->image);
         }
 
-        $berita->update($validator);
+        $berita->update([
+            'judul' => $request->judul,
+            'deskripsi' => $request->deskripsi,
+            'image' => $storeImage ?? $berita->image,
+            'isPublished' => $request->isPublished
+        ]);
         return response()->json([
             'message' => 'Data berhasil diubah',
             'berita' => $berita

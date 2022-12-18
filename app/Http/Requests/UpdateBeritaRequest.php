@@ -26,8 +26,8 @@ class UpdateBeritaRequest extends FormRequest
         return [
             'judul' => ['required', 'max:100'],
             'deskripsi' => ['required'],
-            'image' => ['nullable', 'image', 'mimes:png,jpg,jpeg,gif', 'size:5120'],
-            'isPublished' => ['nullable', 'boolean']
+            'image' => ['nullable', 'image', 'mimes:png,jpg,jpeg,gif'],
+            'isPublished' => ['required', 'boolean']
         ];
     }
 }
