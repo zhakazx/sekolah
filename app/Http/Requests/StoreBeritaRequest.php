@@ -27,7 +27,7 @@ class StoreBeritaRequest extends FormRequest
             'judul' => ['required', 'max:100'],
             'deskripsi' => ['required'],
             'image' => ['nullable', 'image', 'mimes:png,jpg,jpeg,gif'],
-            'isPublished' => ['nullable', 'boolean']
+            'isPublished' => ['required', 'boolean']
         ];
     }
 }

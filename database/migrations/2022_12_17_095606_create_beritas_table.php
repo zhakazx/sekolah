@@ -18,7 +18,7 @@ return new class extends Migration
             $table->string('judul');
             $table->longText('deskripsi');
             $table->string('image')->nullable();
-            $table->boolean('isPublished')->default(1);
+            $table->boolean('isPublished')->default('1');
             $table->timestamps();
         });
     }

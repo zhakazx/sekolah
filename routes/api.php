@@ -24,5 +24,5 @@ Route::group([
     Route::post('auth/refresh', [AuthController::class, 'refresh']);
     Route::get('auth/user-profile', [AuthController::class, 'userProfile']);
 
-    Route::apiResource('berita', BeritaController::class);
+    Route::apiResource('berita', BeritaController::class, ['parameters' => ['berita' => 'berita']]);
 });

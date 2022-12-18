@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Helpers\ImageHelper;
 use App\Models\Berita;
 use App\Http\Requests\StoreBeritaRequest;
 use App\Http\Requests\UpdateBeritaRequest;
+use Illuminate\Support\Facades\File;
 
 class BeritaController extends Controller
 {
@@ -30,14 +32,18 @@ class BeritaController extends Controller
      */
     public function store(StoreBeritaRequest $request)
     {
-        $validator = $request->validated();
+        $request->validated();
 
         if($request->file('image')) {
-            $getFileName = time().'-'.$request->image->getClientOriginalName();
-            $validator['image'] = $request->file('image')->storePubliclyAs('berita/', $getFileName, 'public');
+            $storeImage = ImageHelper::saveImage($request->image);
         }
 
-        $berita = Berita::create($validator);
+        $berita = Berita::create([
+            'judul' => $request->judul,
+            'deskripsi' => $request->deskripsi,
+            'image' => $storeImage,
+            'isPublished' => $request->isPublished
+        ]);
         return response()->json([
             'message' => 'Data berhasil ditambahkan',
             'berita' => $berita
@@ -65,6 +71,18 @@ class BeritaController extends Controller
     public function update(UpdateBeritaRequest $request, Berita $berita)
     {
         $validator = $request->validated();
+
+        if($request->hasFile('image')) {
+            $path = 'berita/' . $berita->image;
+            if (File::exists($path)) {
+                File::delete($path);
+            }
+
+            $getFileName = pathinfo($request->image->getClientOriginalName(), PATHINFO_FILENAME);
+            $getExtension = $request->image->getClientOriginalExtension();
+            $storeFileName = $getFileName . '-' . time() . '.' . $getExtension;
+            $validator['image'] = $request->file('image')->move(public_path('/berita/'), $storeFileName);
+        }
 
         $berita->update($validator);
         return response()->json([
