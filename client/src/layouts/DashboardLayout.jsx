@@ -6,7 +6,7 @@ import SidebarDashboard from '../components/SidebarDashboard';
 
 const Layout = () => {
   return (
-    <div className="flex min-h-screen">
+    <div className="flex min-h-screen bg-100">
     <SidebarDashboard />
 
     <main className="main flex flex-col flex-grow md:ml-0 transition-all duration-150 ease-in">
