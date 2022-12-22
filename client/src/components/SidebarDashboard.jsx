@@ -10,11 +10,12 @@ import { FiMessageSquare, FiFolder, FiShoppingCart } from "react-icons/fi";
 
 const Sidebar = () => {
   const [open, setOpen] = useState(false);
-  const [openMenu, setOpenMenu] = useState(true);
-  const [openSubMenu, setOpenSubMenu] = useState(true);
+  const [openMenu, setOpenMenu] = useState(false);
+  const [openSubMenu, setOpenSubMenu] = useState(false);
 
   const menus = [
     { name: "Dashboard",
+      link: "/",
       icon: MdOutlineDashboard,
       subMenu: false
     },
@@ -25,7 +26,7 @@ const Sidebar = () => {
       subMenuItems: [
         {
           name: "View Berita",
-          link: "/berita"
+          link: "/master/berita"
         }
       ]
     },
@@ -47,7 +48,8 @@ const Sidebar = () => {
         <div className="mt-4 flex flex-col gap-4 relative">
           <ul>
             {menus?.map((menu, i) => (
-              <div
+              <Link
+                to={menu?.link}
                 onClick={() => setOpenMenu(prev => prev = true)}
                 key={i}
                 className={` ${
@@ -98,7 +100,7 @@ const Sidebar = () => {
                     ))}
                   </ul>
                 )}
-              </div>
+              </Link>
               ))}
           </ul>
         </div>
