@@ -6,8 +6,12 @@ import {
 } from '../../../features/dashboard/beritaApi';
 
 const Berita = () => {
-  const { data, isLoading, isError, error } = useGetAllBeritaQuery();
+  const { data, isLoading, isError } = useGetAllBeritaQuery();
   const [deleteBerita] = useDeleteBeritaMutation();
+
+  const handleDelete = async (id) => {
+    await deleteBerita(id);
+  }
   return (
     <div className="">
         <div className="w-full">
@@ -65,7 +69,7 @@ const Berita = () => {
                               >
                                   <BiEdit className='inline' />
                               </button>
-                              <button onClick={() => deleteBerita(item.id)}
+                              <button onClick={() => handleDelete(item.id)}
                                 className='text-sm md:text-xl text-black mr-1 bg-white font-medium md:font-semibold py-1 px-3 hover:text-red-400'
                               >
                                   <BiTrash className='inline' />
@@ -74,9 +78,13 @@ const Berita = () => {
                           </tr>
                         </>
                       ))}
-                    {isLoading && (
+                    {isLoading || data.data.length == 0 && (
                       <tr>
-                        <td colSpan={5} className="p-3 whitespace-nowrap text-gray-700 text-sm text-center">Belum ada data</td>
+                        <td
+                          colSpan={5}
+                          className="p-3 whitespace-nowrap text-gray-700 text-sm text-center"
+                          >Belum ada data
+                        </td>
                       </tr>
                     )}
                   </tbody>

@@ -7,9 +7,31 @@ export const beritaApi = apiSlice.injectEndpoints({
             query: () => '/berita',
             providesTags: ['Berita']
         }),
-        deleteBerita: builder.mutation({
+        getBerita: builder.query({
             query: (id) => `/berita/${id}`,
-            method: 'DELETE',
+            providesTags: ['Berita']
+        }),
+        createBerita: builder.mutation({
+            query: (data) => ({
+                url: '/berita',
+                method: 'POST',
+                body: data
+            }),
+            invalidatesTags: ['Berita']
+        }),
+        updateBerita: builder.mutation({
+            query: ({id, ...data}) => ({
+                url: `/berita/${id}`,
+                method: 'PUT',
+                body: data
+            }),
+            invalidatesTags: ['Berita']
+        }),
+        deleteBerita: builder.mutation({
+            query: (id) => ({
+                url: `/berita/${id}`, 
+                method: 'DELETE',
+            }),
             invalidatesTags: ['Berita']
         })
     })
@@ -17,5 +39,8 @@ export const beritaApi = apiSlice.injectEndpoints({
 
 export const {
     useGetAllBeritaQuery,
+    useGetBeritaQuery,
+    useCreateBeritaMutation,
+    useUpdateBeritaMutation,
     useDeleteBeritaMutation,
 } = beritaApi
