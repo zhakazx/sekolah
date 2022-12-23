@@ -1,16 +1,22 @@
-import React from 'react'
-import { BiTrash, BiEdit } from 'react-icons/bi';
+import { useEffect } from 'react';
+import { BiTrash, BiEdit, BiVerticalCenter } from 'react-icons/bi';
+import { 
+  useGetAllBeritaQuery,
+  useDeleteBeritaMutation
+} from '../../../features/dashboard/beritaApi';
 
 const Berita = () => {
+  const { data, isLoading, isError, error } = useGetAllBeritaQuery();
+  const [deleteBerita] = useDeleteBeritaMutation();
   return (
     <div className="">
-        <div class="w-full">
-          <div class="relative flex flex-col min-w-0 break-words bg-white border-0 rounded-2xl bg-clip-border">
+        <div className="w-full">
+          <div className="relative flex flex-col min-w-0 break-words bg-white border-0 rounded-2xl bg-clip-border">
             <h1 className="font-bold text-2xl text-gray-700 mb-5">Data Berita</h1>
             <div className="flex flex-row items-center justify-between mb-3">
               <form>
                 <select className="select select-bordered select-sm w-full max-w-xs select">
-                  <option disabled selected>10</option>
+                  <option>10</option>
                   <option>20</option>
                   <option>30</option>
                 </select>
@@ -24,8 +30,8 @@ const Berita = () => {
                 </form>
               </div>
             </div>
-            <div className="overflow-x-scroll">
-                <table className="w-full">
+            <div>
+                <table className="w-96 md:w-full overflow-x-auto">
                   <thead className="bg-slate-900 text-white border-b-2 border-gray-200 py-1">
                     <tr>
                       <th className="p-3 text-sm font-normal md:font-semibold tracking-wide text-left">
@@ -46,42 +52,33 @@ const Berita = () => {
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-gray-100">
-                    <tr>
-                      <td className="p-3 whitespace-nowrap text-gray-700 text-sm">1</td>
-                      <td className="p-3 whitespace-nowrap text-gray-700 text-sm">Berita 1</td>
-                      <td className="p-3 whitespace-nowrap text-gray-700 text-sm">Lorem ipsum dolor sit amet consectetur adipisicing elit. Quas, consequuntur.</td>
-                      <td className="p-3 whitespace-nowrap text-gray-700 text-sm">15-07-2005</td>
-                      <td className="p-3 whitespace-nowrap text-gray-700 text-sm">
-                        <button
-                          className='text-sm md:text-xl text-black mr-1 bg-white font-medium md:font-semibold py-1 px-3 hover:text-amber-400'
-                        >
-                            <BiEdit className='inline' />
-                        </button>
-                        <button
-                          className='text-sm md:text-xl text-black mr-1 bg-white font-medium md:font-semibold py-1 px-3 hover:text-red-400'
-                        >
-                            <BiTrash className='inline' />
-                        </button>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td className="p-3 whitespace-nowrap text-gray-700 text-sm">2</td>
-                      <td className="p-3 whitespace-nowrap text-gray-700 text-sm">Berita 2</td>
-                      <td className="p-3 whitespace-nowrap text-gray-700 text-sm">Lorem ipsum dolor sit amet consectetur adipisicing elit. Quas, consequuntur.</td>
-                      <td className="p-3 whitespace-nowrap text-gray-700 text-sm">15-07-2005</td>
-                      <td className="p-3 whitespace-nowrap text-gray-700 text-sm">
-                        <button
-                          className='text-sm md:text-xl text-black mr-1 bg-white font-medium md:font-semibold py-1 px-3 hover:text-amber-400'
-                        >
-                            <BiEdit className='inline' />
-                        </button>
-                        <button
-                          className='text-sm md:text-xl text-black mr-1 bg-white font-medium md:font-semibold py-1 px-3 hover:text-red-400'
-                        >
-                            <BiTrash className='inline' />
-                        </button>
-                      </td>
-                    </tr>
+                      {data && data?.data?.map((item, i) => (
+                        <>
+                          <tr key={item.id}>
+                            <td className="p-3 whitespace-nowrap text-gray-700 text-sm">{i + 1}</td>
+                            <td className="p-3 whitespace-nowrap text-gray-700 text-sm">{item.judul}</td>
+                            <td className="p-3 whitespace-nowrap text-gray-700 text-sm">{item.deskripsi}</td>
+                            <td className="p-3 whitespace-nowrap text-gray-700 text-sm">{item.created_at}</td>
+                            <td className="p-3 whitespace-nowrap text-gray-700 text-sm">
+                              <button
+                                className='text-sm md:text-xl text-black mr-1 bg-white font-medium md:font-semibold py-1 px-3 hover:text-amber-400'
+                              >
+                                  <BiEdit className='inline' />
+                              </button>
+                              <button onClick={() => deleteBerita(item.id)}
+                                className='text-sm md:text-xl text-black mr-1 bg-white font-medium md:font-semibold py-1 px-3 hover:text-red-400'
+                              >
+                                  <BiTrash className='inline' />
+                              </button>
+                            </td>
+                          </tr>
+                        </>
+                      ))}
+                    {isLoading && (
+                      <tr>
+                        <td colSpan={5} className="p-3 whitespace-nowrap text-gray-700 text-sm text-center">Belum ada data</td>
+                      </tr>
+                    )}
                   </tbody>
                 </table>
             </div>

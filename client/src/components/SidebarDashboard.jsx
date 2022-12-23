@@ -15,7 +15,7 @@ const Sidebar = () => {
 
   const menus = [
     { name: "Dashboard",
-      link: "/",
+      link: "/dashboard",
       icon: MdOutlineDashboard,
       subMenu: false
     },

@@ -2,7 +2,7 @@ import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
 import { setCredentials, logOut } from '../../features/auth/authSlice'
 
 const baseQuery = fetchBaseQuery({
-    baseUrl: 'http://localhost:8000/api/auth',
+    baseUrl: 'http://localhost:8000/api',
     prepareHeaders: (headers, { getState }) => {
         const token = getState().auth.token
         if (token) {
@@ -18,7 +18,7 @@ const baseQueryWithReauth = async (args, api, extraOptions) => {
     if (result?.error?.originalStatus === 403) {
         console.log('sending refresh token')
         // send refresh token to get new access token 
-        const refreshResult = await baseQuery('/refresh', api, extraOptions)
+        const refreshResult = await baseQuery('/auth/refresh', api, extraOptions)
         console.log(refreshResult)
         if (refreshResult?.data) {
             const user = api.getState().auth.user
