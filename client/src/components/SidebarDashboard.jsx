@@ -34,8 +34,8 @@ const Sidebar = () => {
 
   return (
     <div
-        className={`bg-[#0e0e0e] relative z-30 ${
-          open ? "w-72" : "w-16"
+        className={`bg-[#0e0e0e] relative z-100 ${
+          open ? "w-60" : "w-16"
         } duration-500 text-gray-100 px-4`}
       >
         <div className={`py-3 flex justify-end`}>

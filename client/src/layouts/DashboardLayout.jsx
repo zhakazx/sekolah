@@ -13,13 +13,13 @@ const Layout = () => {
 
   return (
     token ? (
-    <div className="flex min-h-screen bg-100">
+    <div className="flex min-h-screen bg-base-200">
     <SidebarDashboard />
 
     <main className="main flex flex-col flex-grow md:ml-0 transition-all duration-150 ease-in">
       <NavbarDashboard user={user} />
       <div className="main-content flex flex-col flex-grow p-4">
-          <div className="flex flex-col flex-grow bg-white rounded mt-2">
+          <div className="flex flex-col flex-grow bg-white rounded-lg mt-2 shadow">
               <Outlet />
           </div>
       </div>
