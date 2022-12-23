@@ -1,10 +1,10 @@
 import { useLocation, Navigate, Outlet } from "react-router-dom";
 import { useSelector } from "react-redux";
-import { selectCurrentToken } from "./authSlice";
+import { selectCurrentToken } from "../features/auth/authSlice";
 
 import React from 'react'
 
-const requireAuth = () => {
+const RequireAuth = () => {
   const token = useSelector(selectCurrentToken);
   const location = useLocation();
   return (
@@ -14,4 +14,4 @@ const requireAuth = () => {
   )
 }
 
-export default requireAuth
+export default RequireAuth

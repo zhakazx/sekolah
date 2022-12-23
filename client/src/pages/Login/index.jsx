@@ -1,4 +1,3 @@
-import React from 'react';
 import { useState, useRef, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { setCredentials } from '../../features/auth/authSlice';
@@ -6,15 +5,15 @@ import { useLoginMutation } from '../../features/auth/authApi';
 import { useNavigate } from 'react-router-dom';
 
 const Login = () => {
-  const dispatch = useDispatch();
-  const navigate = useNavigate();
   const userRef = useRef();
   const passwordRef = useRef();
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
-
+  const navigate = useNavigate();
+  
   const [login, { isLoading }] = useLoginMutation();
+  const dispatch = useDispatch();
 
   useEffect(() => {
     userRef.current.focus();
@@ -29,20 +28,17 @@ const Login = () => {
 
     try {
       const data = await login({ username, password }).unwrap();
-      console.log('dataUser : ',data);
-      dispatch(setCredentials({ ...data, user }));
+      dispatch(setCredentials({ ...data }));
       setUsername('');
       setPassword('');
       navigate('/dashboard');
     } catch (err) {
-      if(!err?.response) {
-        setError('No server response')
-      } else if (err.response?.status === 401) {
+      if(err?.originalStatus === 401) {
         setError('Unauthorized');
-      } else {
+      } else if (err?.originalStatus === 422) {
         setError('Invalid username or password');
       }
-      errRef.current.focus();
+      setIsLoading(false);
     }
   }
 
@@ -91,10 +87,10 @@ const Login = () => {
                   <a href="#" className="label-text-alt link link-hover">Lupa password?</a>
                 </label>
               </div>
-            </form>
             <div className="form-control mt-6">
-              <button className={`btn btn-primary disabled ${isLoading ? 'disabled' : ''}`}>Masuk</button>
+              <button className="btn btn-primary" disabled={isLoading}>Masuk</button>
             </div>
+            </form>
           </div>
         </div>
       </div>

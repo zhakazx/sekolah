@@ -4,6 +4,7 @@ import DashboardLayout from "./layouts/DashboardLayout";
 import Dashboard from "./pages/Dashboard";
 import Berita from "./pages/Dashboard/Berita";
 import Login from "./pages/Login";
+import RequireAuth from "./middlewares/requireAuth";
 
 function App() {
   return (
@@ -11,9 +12,10 @@ function App() {
         <Routes>
           <Route path="/login" element={<Login />} />
           <Route element={<DashboardLayout />}>
-              {/* <Route path="/" element={<Navigate to="/dashboard" replace />} /> */}
-              <Route path="/" element={<Dashboard />} />
-              <Route path="/master/berita" element={<Berita />} />
+            {/* <Route element={<RequireAuth />}> */}
+                <Route path="/dashboard" element={<Dashboard />} />
+                <Route path="/master/berita" element={<Berita />} />
+            {/* </Route> */}
           </Route>
         </Routes>
     </div>
